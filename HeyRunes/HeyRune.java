@@ -20,6 +20,10 @@ public class HeyRune
 	public boolean south = true;
 	public boolean east = true;
 	public boolean west = true;
+	public int northTier = -1;
+	public int southTier = -1;
+        public int eastTier  = -1;
+        public int westTier  = -1;
 	
 	public HeyRune(String in_name, int[][] in_pattern) {
 		name = in_name;
@@ -121,6 +125,11 @@ public class HeyRune
 		south = true;
 		east = true;
 		west = true;
+
+		northTier = -1;
+		southTier = -1;
+		eastTier = -1;
+		westTier = -1;
 	}
 	
 	public static HeyRune match(ArrayList<HeyRune> _r, int x, int y, int z) {
@@ -138,6 +147,8 @@ public class HeyRune
 		int xoffset = 0;
 		int yoffset = 0;
 		int zoffset = 0;
+		int blockId = 0;
+		int blockTier = 0;
 		for (int i = 0; index < size; ++i) {
 			for (int j = 0; j < ((i/2) + 1); ++j) {
 				try {
@@ -150,17 +161,49 @@ public class HeyRune
 						}
 						int myId = rune.idAt(index);
 						if (myId > 0) {
-							if(rune.north && myId != etc.getServer().getBlockIdAt(xoffset + x, y, zoffset + z)) {
-								rune.north = false;
+							blockId =  etc.getServer().getBlockIdAt(xoffset + x, y,  zoffset + z);
+	                                                blockTier = HeyRuneTiers.tier[myId];
+							if(rune.north && myId != blockId) {
+								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
+									if(myId == -3 && rune.northTier == -1 && blockTier > 0) {// first tiered material
+										rune.northTier = blockId;
+									} else if ( myId != -3 || blockId != rune.northTier ) {
+										rune.north = false;
+									}
+								}
 							}
-							if(rune.east && myId != etc.getServer().getBlockIdAt(zoffset + x, y, -xoffset + z)) {
-								rune.east = false;
+							blockId =  etc.getServer().getBlockIdAt(zoffset + x, y,  -xoffset + z);
+	                                                blockTier = HeyRuneTiers.tier[myId];
+							if(rune.east && myId != blockId) {
+								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
+									if(myId == -3 && rune.eastTier == -1 && blockTier > 0) {// first tiered material
+										rune.eastTier = blockId;
+									} else if ( myId != -3 || blockId != rune.eastTier ) {
+										rune.east = false;
+									}
+								}
 							}
-							if(rune.south && myId != etc.getServer().getBlockIdAt(-xoffset + x, y, -zoffset + z)) {
-								rune.south = false;
+							blockId =  etc.getServer().getBlockIdAt(-xoffset + x, y,  -zoffset + z);
+	                                                blockTier = HeyRuneTiers.tier[myId];
+							if(rune.south && myId != blockId) {
+								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
+									if(myId == -3 && rune.southTier == -1 && blockTier > 0) {// first tiered material
+										rune.southTier = blockId;
+									} else if ( myId != -3 || blockId != rune.southTier ) {
+										rune.south = false;
+									}
+								}
 							}
-							if(rune.west && myId != etc.getServer().getBlockIdAt(-zoffset + x, y, xoffset + z)) {
-								rune.west = false;
+							blockId =  etc.getServer().getBlockIdAt(-zoffset + x, y,  xoffset + z);
+	                                                blockTier = HeyRuneTiers.tier[myId];
+							if(rune.west && myId != blockId) {
+								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
+									if(myId == -3 && rune.westTier == -1 && blockTier > 0) {// first tiered material
+										rune.westTier = blockId;
+									} else if ( myId != -3 || blockId != rune.westTier ) {
+										rune.west = false;
+									}
+								}
 							}
 						}
 						if (index + 1 == rune.size()) {
