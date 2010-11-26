@@ -12,9 +12,18 @@ import java.util.logging.Logger;
 public class HeyRuneTiers {
 	
 	static public int[] tier = new int[512]; 
-	
-	public void HeyRuneTiers() {
-	
+
+	static boolean ready = false;
+
+	public HeyRuneTiers() {
+
+		init();
+
+	}
+
+
+	static public void init() {
+
 		PropertiesFile pf = new PropertiesFile( "HeyRuneTiers.txt" );
 		pf.load();
 	

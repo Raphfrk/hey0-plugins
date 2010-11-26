@@ -136,6 +136,10 @@ public class HeyRune
 		ArrayList<HeyRune> runes = new ArrayList<HeyRune>(_r);
 		HeyRune victor = null;
 		Direction victorD = null;
+
+		if( !HeyRuneTiers.ready ) {
+			HeyRuneTiers.init();
+		}
 		
 		int size = 0;
 		for (HeyRune r : runes) {
@@ -160,9 +164,9 @@ public class HeyRune
 							continue;
 						}
 						int myId = rune.idAt(index);
-						if (myId > 0) {
+						if (myId > 0 || myId == -2 || myId == -3 ) {
 							blockId =  etc.getServer().getBlockIdAt(xoffset + x, y,  zoffset + z);
-	                                                blockTier = HeyRuneTiers.tier[myId];
+	                                                blockTier = HeyRuneTiers.tier[blockId];
 							if(rune.north && myId != blockId) {
 								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
 									if(myId == -3 && rune.northTier == -1 && blockTier > 0) {// first tiered material
@@ -173,7 +177,7 @@ public class HeyRune
 								}
 							}
 							blockId =  etc.getServer().getBlockIdAt(zoffset + x, y,  -xoffset + z);
-	                                                blockTier = HeyRuneTiers.tier[myId];
+	                                                blockTier = HeyRuneTiers.tier[blockId];
 							if(rune.east && myId != blockId) {
 								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
 									if(myId == -3 && rune.eastTier == -1 && blockTier > 0) {// first tiered material
@@ -184,7 +188,7 @@ public class HeyRune
 								}
 							}
 							blockId =  etc.getServer().getBlockIdAt(-xoffset + x, y,  -zoffset + z);
-	                                                blockTier = HeyRuneTiers.tier[myId];
+	                                                blockTier = HeyRuneTiers.tier[blockId];
 							if(rune.south && myId != blockId) {
 								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
 									if(myId == -3 && rune.southTier == -1 && blockTier > 0) {// first tiered material
@@ -195,7 +199,7 @@ public class HeyRune
 								}
 							}
 							blockId =  etc.getServer().getBlockIdAt(-zoffset + x, y,  xoffset + z);
-	                                                blockTier = HeyRuneTiers.tier[myId];
+	                                                blockTier = HeyRuneTiers.tier[blockId];
 							if(rune.west && myId != blockId) {
 								if(myId != -2 || blockTier != 0) { // Ink not permitted or ink not found
 									if(myId == -3 && rune.westTier == -1 && blockTier > 0) {// first tiered material
